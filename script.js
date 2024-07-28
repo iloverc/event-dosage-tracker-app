@@ -51,6 +51,11 @@ function openAddDosageModal(index) {
     document.getElementById('entry-modal').show();
 }
 
+document.getElementById('entry-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    addDosageEntry();
+});
+
 function addDosageEntry() {
     const name = document.getElementById('entry-name').value;
     const substance = document.getElementById('entry-substance').value;
