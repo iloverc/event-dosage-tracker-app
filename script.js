@@ -14,12 +14,6 @@ function createNewEvent() {
     }
 }
 
-function addDosage(eventIndex) {
-    const modal = document.getElementById('entry-modal');
-    modal.show();
-    document.getElementById('entry-form').dataset.eventIndex = eventIndex;
-}
-
 function saveEvents() {
     localStorage.setItem('events', JSON.stringify(events));
 }
@@ -34,107 +28,93 @@ function renderEvents() {
     events.forEach((event, index) => {
         const listItem = document.createElement('ons-list-item');
         listItem.innerHTML = `
-            <div class="center">${event.date}</div>
+            <div class="center">
+                Event Date: ${event.date}
+            </div>
             <div class="right">
-                <ons-button modifier="quiet" onclick="viewEvent(${index})">View</ons-button>
-                <ons-button modifier="quiet" onclick="exportJson(${index})">Export JSON</ons-button>
-                <ons-button modifier="quiet" onclick="deleteEvent(${index})">Delete</ons-button>
-                <ons-button modifier="quiet" onclick="openAddDosageModal(${index})">Add Dosage</ons-button>
+                <ons-button onclick="viewEvent(${index})">View</ons-button>
             </div>
         `;
         list.appendChild(listItem);
     });
 }
 
-function openAddDosageModal(index) {
-    document.getElementById('entry-form').dataset.eventIndex = index;
-    document.getElementById('entry-modal').show();
+function viewEvent(eventIndex) {
+    const event = events[eventIndex];
+    const modal = document.getElementById('event-modal');
+    const dateElement = document.getElementById('event-date');
+    const entriesList = document.getElementById('event-entries');
+
+    dateElement.textContent = `Event Date: ${event.date}`;
+    entriesList.innerHTML = '';
+
+    event.entries.forEach((entry, index) => {
+        const entryItem = document.createElement('ons-list-item');
+        entryItem.innerHTML = `
+            <div class="center">
+                ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
+            </div>
+        `;
+        entriesList.appendChild(entryItem);
+    });
+
+    modal.show();
+    modal.dataset.eventIndex = eventIndex;
 }
 
-document.getElementById('entry-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    addDosageEntry();
-});
+function showNewEntryModal() {
+    document.getElementById('new-entry-modal').show();
+}
 
-function addDosageEntry() {
-    const name = document.getElementById('entry-name').value;
-    const substance = document.getElementById('entry-substance').value;
-    const dosage = parseFloat(document.getElementById('entry-dosage').value);
-    const eventIndex = document.getElementById('entry-form').dataset.eventIndex;
-
-    let dosageUnit;
+function updateUnit() {
+    const substance = document.getElementById('substance-select').value;
+    const unitInput = document.getElementById('unit-input');
+    
     switch(substance) {
         case 'K':
         case 'M':
         case '2cb':
         case 'Coke':
-            dosageUnit = 'mg';
+            unitInput.value = 'mg';
             break;
         case 'G':
-            dosageUnit = 'ml';
+            unitInput.value = 'ml';
             break;
         case 'N2O':
-            dosageUnit = 'count';
+            unitInput.value = 'count';
             break;
         default:
-            alert('Invalid substance.');
-            return;
+            unitInput.value = '';
     }
+}
 
-    if (name && substance && !isNaN(dosage)) {
-        const entry = { name, substance, dosage, dosageUnit };
-        events[eventIndex].entries.push(entry);
+function saveNewEntry() {
+    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
+    const name = document.getElementById('name-input').value;
+    const substance = document.getElementById('substance-select').value;
+    const dosage = document.getElementById('dosage-input').value;
+    const unit = document.getElementById('unit-input').value;
+
+    if (name && substance && dosage && unit) {
+        events[eventIndex].entries.push({ name, substance, dosage, unit });
         saveEvents();
-        closeEntryModal();
-        renderEvents();
+        viewEvent(eventIndex);
+        document.getElementById('new-entry-modal').hide();
+        resetNewEntryForm();
+    } else {
+        alert('Please fill all fields');
     }
 }
 
-function closeEntryModal() {
-    document.getElementById('entry-modal').hide();
+function resetNewEntryForm() {
+    document.getElementById('name-input').value = '';
+    document.getElementById('substance-select').value = '';
+    document.getElementById('dosage-input').value = '';
+    document.getElementById('unit-input').value = '';
 }
 
-function viewEvent(index) {
-    const event = events[index];
-    let details = `Event Date: ${event.date}\n\nEntries:\n`;
-    event.entries.forEach(entry => {
-        details += `Name: ${entry.name}, Substance: ${entry.substance}, Dosage: ${entry.dosage} ${entry.dosageUnit}\n`;
-    });
-    document.getElementById('view-entries').textContent = details;
-    document.getElementById('view-modal').show();
-}
-
-function closeViewModal() {
-    document.getElementById('view-modal').hide();
-}
-
-function exportJson(index) {
-    const event = events[index];
-    const summary = event.entries.reduce((acc, entry) => {
-        if (!acc[entry.name]) {
-            acc[entry.name] = { K: 0, M: 0, "2cb": 0, G: 0, Coke: 0, N2O: 0 };
-        }
-        acc[entry.name][entry.substance] += entry.dosage;
-        return acc;
-    }, {});
-
-    const jsonData = {
-        event_date: event.date,
-        individuals: Object.entries(summary).map(([name, substances]) => ({ name, substances }))
-    };
-
-    document.getElementById('json-output').textContent = JSON.stringify(jsonData, null, 2);
+function showJSONData() {
+    const jsonOutput = document.getElementById('json-output');
+    jsonOutput.textContent = JSON.stringify(events, null, 2);
     document.getElementById('json-modal').show();
-}
-
-function closeJsonModal() {
-    document.getElementById('json-modal').hide();
-}
-
-function deleteEvent(index) {
-    if (confirm('Are you sure you want to delete this event?')) {
-        events.splice(index, 1);
-        saveEvents();
-        renderEvents();
-    }
 }
