@@ -21,28 +21,26 @@
 
         <ons-list id="events-list"></ons-list>
 
-        <ons-button onclick="showJSONData()">Exported JSON Data</ons-button>
+        <ons-button onclick="showJSONData()">Export JSON Data</ons-button>
     </ons-page>
 
-    <!-- JSON Modal -->
-    <ons-modal id="json-modal">
+    <!-- Event Modal -->
+    <ons-modal id="event-modal">
         <ons-card>
-            <div id="json-output"></div>
-            <ons-button onclick="document.getElementById('json-modal').hide()">Close</ons-button>
+            <h2 id="event-date"></h2>
+            <ons-button onclick="showNewEntryModal()">Add New Entry</ons-button>
+            <ons-list id="event-entries"></ons-list>
+            <ons-button onclick="document.getElementById('event-modal').hide()">Close</ons-button>
         </ons-card>
     </ons-modal>
 
-    <!-- Entry Modal -->
-    <ons-modal id="entry-modal">
+    <!-- New Entry Modal -->
+    <ons-modal id="new-entry-modal">
         <ons-card>
-            <form id="entry-form">
-                <ons-input id="dosage-input" type="number" placeholder="Dosage" float></ons-input>
-                <ons-select id="unit-select">
-                    <option value="mg">mg</option>
-                    <option value="g">g</option>
-                    <option value="ml">ml</option>
-                </ons-select>
-                <ons-select id="substance-select">
+            <form id="new-entry-form">
+                <ons-input id="name-input" type="text" placeholder="Name" float></ons-input>
+                <ons-select id="substance-select" onchange="updateUnit()">
+                    <option value="">Select Substance</option>
                     <option value="K">K</option>
                     <option value="M">M</option>
                     <option value="2cb">2cb</option>
@@ -50,17 +48,19 @@
                     <option value="Coke">Coke</option>
                     <option value="N2O">N2O</option>
                 </ons-select>
-                <ons-button onclick="saveDosage()">Add</ons-button>
-                <ons-button onclick="document.getElementById('entry-modal').hide()">Cancel</ons-button>
+                <ons-input id="dosage-input" type="number" placeholder="Dosage" float></ons-input>
+                <ons-input id="unit-input" type="text" placeholder="Unit" disabled float></ons-input>
+                <ons-button onclick="saveNewEntry()">Add Entry</ons-button>
+                <ons-button onclick="document.getElementById('new-entry-modal').hide()">Cancel</ons-button>
             </form>
         </ons-card>
     </ons-modal>
 
-    <!-- View Modal -->
-    <ons-modal id="view-modal">
+    <!-- JSON Modal -->
+    <ons-modal id="json-modal">
         <ons-card>
-            <div id="view-entries"></div>
-            <ons-button onclick="document.getElementById('view-modal').hide()">Close</ons-button>
+            <div id="json-output"></div>
+            <ons-button onclick="document.getElementById('json-modal').hide()">Close</ons-button>
         </ons-card>
     </ons-modal>
 
