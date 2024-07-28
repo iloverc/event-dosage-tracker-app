@@ -1,0 +1,60 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+ons-toolbar {
+    background-color: #00796B;
+    color: white;
+}
+
+ons-card {
+    margin: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ons-button {
+    width: 100%;
+    margin: 10px 0;
+    background-color: #00796B;
+    color: white;
+}
+
+#json-modal ons-card, #entry-modal ons-card, #view-modal ons-card {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#json-output, #view-entries {
+    white-space: pre-wrap;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#entry-form ons-input, #entry-form ons-select {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#entry-form ons-button {
+    margin-top: 10px;
+}
+
+ons-list-item .center {
+    text-align: left;
+    font-size: 18px;
+}
+
+ons-list-item .right {
+    display: flex;
+    gap: 10px;
+}
+
+#events-list ons-list-item {
+    border-bottom: 1px solid #ddd;
+}
