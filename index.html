@@ -45,20 +45,22 @@
 
         <ons-modal id="new-entry-modal">
             <ons-card>
-                <ons-select id="substance-select" onchange="updateUnit()">
-                    <option value="">Select Substance</option>
-                    <option value="K">K</option>
-                    <option value="M">M</option>
-                    <option value="2cb">2cb</option>
-                    <option value="G">G</option>
-                    <option value="Coke">Coke</option>
-                    <option value="N2O">N2O</option>
-                </ons-select>
-                <ons-input id="name-input" placeholder="Name"></ons-input>
-                <ons-input id="dosage-input" type="number" placeholder="Dosage"></ons-input>
-                <ons-input id="unit-input" placeholder="Unit"></ons-input>
-                <ons-button onclick="saveNewEntry()">Add Entry</ons-button>
-                <ons-button onclick="closeNewEntryModal()">Cancel</ons-button>
+                <form id="entry-form">
+                    <ons-select id="substance-select" onchange="updateUnit()">
+                        <option value="">Select Substance</option>
+                        <option value="K">K</option>
+                        <option value="M">M</option>
+                        <option value="2cb">2cb</option>
+                        <option value="G">G</option>
+                        <option value="Coke">Coke</option>
+                        <option value="N2O">N2O</option>
+                    </ons-select>
+                    <ons-input id="name-input" placeholder="Name"></ons-input>
+                    <ons-input id="dosage-input" type="number" placeholder="Dosage"></ons-input>
+                    <ons-input id="unit-input" placeholder="Unit"></ons-input>
+                    <ons-button onclick="saveNewEntry()">Add Entry</ons-button>
+                    <ons-button onclick="closeNewEntryModal()">Cancel</ons-button>
+                </form>
             </ons-card>
         </ons-modal>
 
