@@ -1,7 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadEvents();
-});
-
 let events = JSON.parse(localStorage.getItem('events')) || [];
 
 function createNewEvent() {
@@ -16,10 +12,6 @@ function createNewEvent() {
 
 function saveEvents() {
     localStorage.setItem('events', JSON.stringify(events));
-}
-
-function loadEvents() {
-    renderEvents();
 }
 
 function renderEvents() {
@@ -46,57 +38,32 @@ function viewEvent(eventIndex) {
     const entriesList = document.getElementById('event-entries');
 
     dateElement.textContent = `Event Date: ${event.date}`;
-    
-    // Create table for entries
-    let tableHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Substance</th>
-                    <th>Dosage</th>
-                    <th>Unit</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+    entriesList.innerHTML = '';
 
-    event.entries.forEach(entry => {
-        tableHTML += `
-            <tr>
-                <td>${entry.name}</td>
-                <td>${entry.substance}</td>
-                <td>${entry.dosage}</td>
-                <td>${entry.unit}</td>
-            </tr>
+    event.entries.forEach((entry, index) => {
+        const entryItem = document.createElement('div');
+        entryItem.innerHTML = `
+            ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
+            <ons-button onclick="deleteEntry(${eventIndex}, ${index})">Delete</ons-button>
         `;
+        entriesList.appendChild(entryItem);
     });
-
-    tableHTML += `
-            </tbody>
-        </table>
-    `;
-
-    entriesList.innerHTML = tableHTML;
 
     modal.show();
     modal.dataset.eventIndex = eventIndex;
 }
 
 function showNewEntryModal() {
-    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
-    const event = events[eventIndex];
-    
-    // Populate name dropdown
-    const nameInput = document.getElementById('name-input');
-    const uniqueNames = [...new Set(event.entries.map(entry => entry.name))];
-    
-    nameInput.innerHTML = '<option value="">Select or type a name</option>';
-    uniqueNames.forEach(name => {
-        nameInput.innerHTML += `<option value="${name}">${name}</option>`;
-    });
-
     document.getElementById('new-entry-modal').show();
+}
+
+function closeNewEntryModal() {
+    document.getElementById('new-entry-modal').hide();
+    resetNewEntryForm();
+}
+
+function closeEventModal() {
+    document.getElementById('event-modal').hide();
 }
 
 function updateUnit() {
@@ -132,8 +99,7 @@ function saveNewEntry() {
         events[eventIndex].entries.push({ name, substance, dosage, unit });
         saveEvents();
         viewEvent(eventIndex);
-        document.getElementById('new-entry-modal').hide();
-        resetNewEntryForm();
+        closeNewEntryModal();
     } else {
         alert('Please fill all fields');
     }
@@ -146,8 +112,27 @@ function resetNewEntryForm() {
     document.getElementById('unit-input').value = '';
 }
 
+function deleteEntry(eventIndex, entryIndex) {
+    events[eventIndex].entries.splice(entryIndex, 1);
+    saveEvents();
+    viewEvent(eventIndex);
+}
+
+function deleteEvent() {
+    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
+    events.splice(eventIndex, 1);
+    saveEvents();
+    renderEvents();
+    closeEventModal();
+}
+
 function showJSONData() {
     const jsonOutput = document.getElementById('json-output');
     jsonOutput.textContent = JSON.stringify(events, null, 2);
     document.getElementById('json-modal').show();
 }
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+    renderEvents();
+});
