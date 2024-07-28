@@ -38,16 +38,40 @@ function viewEvent(eventIndex) {
     const entriesList = document.getElementById('event-entries');
 
     dateElement.textContent = `Event Date: ${event.date}`;
-    entriesList.innerHTML = '';
+    
+    // Create table for entries
+    let tableHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Substance</th>
+                    <th>Dosage</th>
+                    <th>Unit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
     event.entries.forEach((entry, index) => {
-        const entryItem = document.createElement('div');
-        entryItem.innerHTML = `
-            ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
-            <ons-button onclick="deleteEntry(${eventIndex}, ${index})">Delete</ons-button>
+        tableHTML += `
+            <tr>
+                <td>${entry.name}</td>
+                <td>${entry.substance}</td>
+                <td>${entry.dosage}</td>
+                <td>${entry.unit}</td>
+                <td><ons-button onclick="deleteEntry(${eventIndex}, ${index})">Delete</ons-button></td>
+            </tr>
         `;
-        entriesList.appendChild(entryItem);
     });
+
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+
+    entriesList.innerHTML = tableHTML;
 
     modal.show();
     modal.dataset.eventIndex = eventIndex;
