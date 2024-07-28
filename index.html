@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dosage Tracker App</title>
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <link rel="stylesheet" href="lib/onsen-css-components.min.css">
+    <link rel="stylesheet" href="lib/onsenui.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/onsenui.min.js"></script>
 </head>
 <body>
     <ons-page>
@@ -15,30 +16,23 @@
         </ons-toolbar>
 
         <ons-card>
-            <ons-button modifier="large" onclick="createNewEvent()">Create Event</ons-button>
+            <ons-button onclick="createNewEvent()">Create Event</ons-button>
+            <ons-list id="events-list"></ons-list>
+            <ons-button onclick="showJSONData()">Export JSON Data</ons-button>
         </ons-card>
 
-        <ons-list id="events-list"></ons-list>
+        <ons-modal id="event-modal">
+            <ons-card>
+                <h2 id="event-date"></h2>
+                <div id="event-entries"></div>
+                <ons-button onclick="showNewEntryModal()">Add New Entry</ons-button>
+                <ons-button onclick="closeEventModal()">Close</ons-button>
+                <ons-button onclick="deleteEvent()">Delete Event</ons-button>
+            </ons-card>
+        </ons-modal>
 
-        <ons-button modifier="large" onclick="showJSONData()">Export JSON Data</ons-button>
-    </ons-page>
-
-    <!-- Event Modal -->
-    <ons-modal id="event-modal">
-        <ons-card>
-            <h2 id="event-date"></h2>
-            <ons-button modifier="large" onclick="showNewEntryModal()">Add New Entry</ons-button>
-            <div id="event-entries"></div>
-            <ons-button modifier="large" onclick="closeEventModal()">Close</ons-button>
-            <ons-button modifier="large" onclick="deleteEvent()">Delete Event</ons-button>
-        </ons-card>
-    </ons-modal>
-
-    <!-- New Entry Modal -->
-    <ons-modal id="new-entry-modal">
-        <ons-card>
-            <form id="new-entry-form">
-                <ons-input id="name-input" type="text" placeholder="Name" float></ons-input>
+        <ons-modal id="new-entry-modal">
+            <ons-card>
                 <ons-select id="substance-select" onchange="updateUnit()">
                     <option value="">Select Substance</option>
                     <option value="K">K</option>
@@ -48,21 +42,21 @@
                     <option value="Coke">Coke</option>
                     <option value="N2O">N2O</option>
                 </ons-select>
-                <ons-input id="dosage-input" type="number" placeholder="Dosage" float></ons-input>
-                <ons-input id="unit-input" type="text" placeholder="Unit" disabled float></ons-input>
-                <ons-button modifier="large" onclick="saveNewEntry()">Add Entry</ons-button>
-                <ons-button modifier="large" onclick="closeNewEntryModal()">Cancel</ons-button>
-            </form>
-        </ons-card>
-    </ons-modal>
+                <ons-input id="name-input" placeholder="Name"></ons-input>
+                <ons-input id="dosage-input" type="number" placeholder="Dosage"></ons-input>
+                <ons-input id="unit-input" placeholder="Unit"></ons-input>
+                <ons-button onclick="saveNewEntry()">Add Entry</ons-button>
+                <ons-button onclick="closeNewEntryModal()">Cancel</ons-button>
+            </ons-card>
+        </ons-modal>
 
-    <!-- JSON Modal -->
-    <ons-modal id="json-modal">
-        <ons-card>
-            <div id="json-output"></div>
-            <ons-button modifier="large" onclick="document.getElementById('json-modal').hide()">Close</ons-button>
-        </ons-card>
-    </ons-modal>
+        <ons-modal id="json-modal">
+            <ons-card>
+                <pre id="json-output"></pre>
+                <ons-button onclick="document.getElementById('json-modal').hide()">Close</ons-button>
+            </ons-card>
+        </ons-modal>
+    </ons-page>
 
     <script src="script.js"></script>
 </body>
