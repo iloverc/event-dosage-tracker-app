@@ -48,6 +48,7 @@ ons-button {
 ons-list-item .center {
     text-align: left;
     font-size: 18px;
+    width: 100%; /* Ensure full width for better visibility */
 }
 
 ons-list-item .right {
