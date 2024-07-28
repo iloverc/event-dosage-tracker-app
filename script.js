@@ -40,10 +40,13 @@ function viewEvent(eventIndex) {
     const updatedEvents = JSON.parse(localStorage.getItem('events')) || [];
     const event = updatedEvents[eventIndex];
 
+    console.log('Viewing event:', event);
+
     dateElement.textContent = `Event Date: ${event.date}`;
     entriesList.innerHTML = '';
 
     event.entries.forEach((entry, index) => {
+        console.log('Rendering entry:', entry);
         const entryDiv = document.createElement('div');
         entryDiv.innerHTML = `
             ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
