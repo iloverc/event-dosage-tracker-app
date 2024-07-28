@@ -6,7 +6,6 @@
     <title>Dosage Tracker App</title>
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
 </head>
 <body>
@@ -30,7 +29,8 @@
             <h2 id="event-date"></h2>
             <ons-button modifier="large" onclick="showNewEntryModal()">Add New Entry</ons-button>
             <div id="event-entries"></div>
-            <ons-button modifier="large" onclick="document.getElementById('event-modal').hide()">Close</ons-button>
+            <ons-button modifier="large" onclick="closeEventModal()">Close</ons-button>
+            <ons-button modifier="large" onclick="deleteEvent()">Delete Event</ons-button>
         </ons-card>
     </ons-modal>
 
@@ -38,9 +38,7 @@
     <ons-modal id="new-entry-modal">
         <ons-card>
             <form id="new-entry-form">
-                <ons-select id="name-input" modifier="underbar">
-                    <option value="">Select or type a name</option>
-                </ons-select>
+                <ons-input id="name-input" type="text" placeholder="Name" float></ons-input>
                 <ons-select id="substance-select" onchange="updateUnit()">
                     <option value="">Select Substance</option>
                     <option value="K">K</option>
@@ -53,7 +51,7 @@
                 <ons-input id="dosage-input" type="number" placeholder="Dosage" float></ons-input>
                 <ons-input id="unit-input" type="text" placeholder="Unit" disabled float></ons-input>
                 <ons-button modifier="large" onclick="saveNewEntry()">Add Entry</ons-button>
-                <ons-button modifier="large" onclick="document.getElementById('new-entry-modal').hide()">Cancel</ons-button>
+                <ons-button modifier="large" onclick="closeNewEntryModal()">Cancel</ons-button>
             </form>
         </ons-card>
     </ons-modal>
