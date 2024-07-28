@@ -38,7 +38,6 @@ function viewEvent(eventIndex) {
     const entriesList = document.getElementById('event-entries');
 
     dateElement.textContent = `Event Date: ${event.date}`;
-    
     entriesList.innerHTML = '';
 
     event.entries.forEach((entry, index) => {
@@ -98,6 +97,7 @@ function saveNewEntry() {
 
     if (name && substance && dosage && unit) {
         events[eventIndex].entries.push({ name, substance, dosage, unit });
+        console.log('Entry added:', { name, substance, dosage, unit });
         saveEvents();
         viewEvent(eventIndex);
         closeNewEntryModal();
@@ -135,5 +135,6 @@ function showJSONData() {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('App initialized');
     renderEvents();
 });
