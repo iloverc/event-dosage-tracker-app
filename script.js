@@ -46,23 +46,56 @@ function viewEvent(eventIndex) {
     const entriesList = document.getElementById('event-entries');
 
     dateElement.textContent = `Event Date: ${event.date}`;
-    entriesList.innerHTML = '';
+    
+    // Create table for entries
+    let tableHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Substance</th>
+                    <th>Dosage</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
-    event.entries.forEach((entry, index) => {
-        const entryItem = document.createElement('ons-list-item');
-        entryItem.innerHTML = `
-            <div class="center">
-                ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
-            </div>
+    event.entries.forEach(entry => {
+        tableHTML += `
+            <tr>
+                <td>${entry.name}</td>
+                <td>${entry.substance}</td>
+                <td>${entry.dosage}</td>
+                <td>${entry.unit}</td>
+            </tr>
         `;
-        entriesList.appendChild(entryItem);
     });
+
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+
+    entriesList.innerHTML = tableHTML;
 
     modal.show();
     modal.dataset.eventIndex = eventIndex;
 }
 
 function showNewEntryModal() {
+    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
+    const event = events[eventIndex];
+    
+    // Populate name dropdown
+    const nameInput = document.getElementById('name-input');
+    const uniqueNames = [...new Set(event.entries.map(entry => entry.name))];
+    
+    nameInput.innerHTML = '<option value="">Select or type a name</option>';
+    uniqueNames.forEach(name => {
+        nameInput.innerHTML += `<option value="${name}">${name}</option>`;
+    });
+
     document.getElementById('new-entry-modal').show();
 }
 
