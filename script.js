@@ -32,10 +32,13 @@ function renderEvents() {
 }
 
 function viewEvent(eventIndex) {
-    const event = events[eventIndex];
     const modal = document.getElementById('event-modal');
     const dateElement = document.getElementById('event-date');
     const entriesList = document.getElementById('event-entries');
+
+    // Retrieve the latest data from localStorage
+    const updatedEvents = JSON.parse(localStorage.getItem('events')) || [];
+    const event = updatedEvents[eventIndex];
 
     dateElement.textContent = `Event Date: ${event.date}`;
     entriesList.innerHTML = '';
@@ -99,8 +102,8 @@ function saveNewEntry() {
         events[eventIndex].entries.push({ name, substance, dosage, unit });
         console.log('Entry added:', { name, substance, dosage, unit });
         saveEvents();
-        viewEvent(eventIndex);
         closeNewEntryModal();
+        viewEvent(eventIndex);
     } else {
         alert('Please fill all fields');
     }
