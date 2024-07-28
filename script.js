@@ -39,39 +39,16 @@ function viewEvent(eventIndex) {
 
     dateElement.textContent = `Event Date: ${event.date}`;
     
-    // Create table for entries
-    let tableHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Substance</th>
-                    <th>Dosage</th>
-                    <th>Unit</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+    entriesList.innerHTML = '';
 
     event.entries.forEach((entry, index) => {
-        tableHTML += `
-            <tr>
-                <td>${entry.name}</td>
-                <td>${entry.substance}</td>
-                <td>${entry.dosage}</td>
-                <td>${entry.unit}</td>
-                <td><ons-button onclick="deleteEntry(${eventIndex}, ${index})">Delete</ons-button></td>
-            </tr>
+        const entryDiv = document.createElement('div');
+        entryDiv.innerHTML = `
+            ${entry.name}: ${entry.substance} - ${entry.dosage} ${entry.unit}
+            <ons-button modifier="quiet" onclick="deleteEntry(${eventIndex}, ${index})">Delete</ons-button>
         `;
+        entriesList.appendChild(entryDiv);
     });
-
-    tableHTML += `
-            </tbody>
-        </table>
-    `;
-
-    entriesList.innerHTML = tableHTML;
 
     modal.show();
     modal.dataset.eventIndex = eventIndex;
@@ -113,7 +90,7 @@ function updateUnit() {
 }
 
 function saveNewEntry() {
-    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
+    const eventIndex = parseInt(document.getElementById('event-modal').dataset.eventIndex);
     const name = document.getElementById('name-input').value;
     const substance = document.getElementById('substance-select').value;
     const dosage = document.getElementById('dosage-input').value;
@@ -143,7 +120,7 @@ function deleteEntry(eventIndex, entryIndex) {
 }
 
 function deleteEvent() {
-    const eventIndex = document.getElementById('event-modal').dataset.eventIndex;
+    const eventIndex = parseInt(document.getElementById('event-modal').dataset.eventIndex);
     events.splice(eventIndex, 1);
     saveEvents();
     renderEvents();
