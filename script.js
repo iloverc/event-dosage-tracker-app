@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let events = JSON.parse(localStorage.getItem('events')) || [];
 
-function createEvent() {
+function createNewEvent() {
     const date = prompt('Enter event date (YYYY-MM-DD):');
     if (date) {
         const event = { date, entries: [] };
