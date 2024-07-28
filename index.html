@@ -4,65 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dosage Tracker App</title>
-    <link rel="stylesheet" href="lib/onsenui.min.css">
-    <link rel="stylesheet" href="lib/onsen-css-components.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
 </head>
 <body>
     <ons-page>
         <ons-toolbar>
             <div class="center">Dosage Tracker App</div>
         </ons-toolbar>
-        
+
         <ons-card>
             <ons-button onclick="createNewEvent()">Create Event</ons-button>
-            <ons-list id="events-list"></ons-list>
         </ons-card>
-        
-        <ons-modal id="json-modal">
-            <div style="text-align: center">
-                <ons-card>
-                    <h3>Exported JSON Data</h3>
-                    <div id="json-output"></div>
-                    <ons-button onclick="closeJsonModal()">Close</ons-button>
-                </ons-card>
-            </div>
-        </ons-modal>
-        
-        <ons-modal id="entry-modal">
-            <div style="text-align: center">
-                <ons-card>
-                    <h3>Add Dosage Entry</h3>
-                    <form id="entry-form">
-                        <ons-input id="entry-name" placeholder="Individual Name" float></ons-input>
-                        <ons-select id="entry-substance">
-                            <option value="K">K</option>
-                            <option value="M">M</option>
-                            <option value="2cb">2cb</option>
-                            <option value="G">G</option>
-                            <option value="Coke">Coke</option>
-                            <option value="N2O">N2O</option>
-                        </ons-select>
-                        <ons-input id="entry-dosage" placeholder="Dosage Amount" float></ons-input>
-                        <ons-button type="submit">Add</ons-button>
-                        <ons-button type="button" onclick="closeEntryModal()">Cancel</ons-button>
-                    </form>
-                </ons-card>
-            </div>
-        </ons-modal>
 
-        <ons-modal id="view-modal">
-            <div style="text-align: center">
-                <ons-card>
-                    <h3>View Entries</h3>
-                    <div id="view-entries"></div>
-                    <ons-button onclick="closeViewModal()">Close</ons-button>
-                </ons-card>
-            </div>
-        </ons-modal>
+        <ons-list id="events-list"></ons-list>
+
+        <ons-button onclick="showJSONData()">Exported JSON Data</ons-button>
     </ons-page>
 
-    <script src="lib/onsenui.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <!-- JSON Modal -->
+    <ons-modal id="json-modal">
+        <ons-card>
+            <div id="json-output"></div>
+            <ons-button onclick="document.getElementById('json-modal').hide()">Close</ons-button>
+        </ons-card>
+    </ons-modal>
+
+    <!-- Entry Modal -->
+    <ons-modal id="entry-modal">
+        <ons-card>
+            <form id="entry-form">
+                <ons-input id="dosage-input" type="number" placeholder="Dosage" float></ons-input>
+                <ons-select id="unit-select">
+                    <option value="mg">mg</option>
+                    <option value="g">g</option>
+                    <option value="ml">ml</option>
+                </ons-select>
+                <ons-select id="substance-select">
+                    <option value="K">K</option>
+                    <option value="M">M</option>
+                    <option value="2cb">2cb</option>
+                    <option value="G">G</option>
+                    <option value="Coke">Coke</option>
+                    <option value="N2O">N2O</option>
+                </ons-select>
+                <ons-button onclick="saveDosage()">Add</ons-button>
+                <ons-button onclick="document.getElementById('entry-modal').hide()">Cancel</ons-button>
+            </form>
+        </ons-card>
+    </ons-modal>
+
+    <!-- View Modal -->
+    <ons-modal id="view-modal">
+        <ons-card>
+            <div id="view-entries"></div>
+            <ons-button onclick="document.getElementById('view-modal').hide()">Close</ons-button>
+        </ons-card>
+    </ons-modal>
+
+    <script src="script.js"></script>
 </body>
 </html>
